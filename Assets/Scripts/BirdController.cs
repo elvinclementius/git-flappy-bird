@@ -1,14 +1,15 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BirdController : MonoBehaviour
 {
-    // Encapsulation
+    // ENCAPSULATION: Data internal disembunyikan (private) dari script lain
     private Rigidbody2D _rb2d;
     private float _flapForce = 5f;
     private bool _isAlive = true;
 
+    // Batas Y di bawah layar untuk Game Over
     [SerializeField] private float _yBounds = -5f;
 
     void Start()
@@ -16,38 +17,44 @@ public class BirdController : MonoBehaviour
         _rb2d = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        // Mendeteksi Input (klik mouse kiri, tap, atau tombol Spasi)
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             Flap();
-        } 
+        }
 
-        if(_isAlive && transform.position.y < _yBounds)
+        // Pengecekan posisi Y untuk Game Over
+        if (_isAlive && transform.position.y < _yBounds)
         {
             Die();
         }
     }
 
+    // ENCAPSULATION: Method publik untuk aksi yang aman
     public void Flap()
     {
-        if(_isAlive)
+        if (_isAlive)
         {
+            // Set kecepatan vertikal saat ini menjadi nol dulu agar flap konsisten
             _rb2d.linearVelocity = Vector2.zero;
+            // Berikan kecepatan instan ke atas sebesar _flapForce
             _rb2d.linearVelocity = Vector2.up * _flapForce;
         }
     }
 
+    // Method Kondisi Kalah: Dipanggil oleh Pipa/Lantai
     public void Die()
     {
-        if (!_isAlive) return;
+        if (!_isAlive) return; // Mencegah double die
         _isAlive = false;
         Debug.Log("Bird Died!");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Jika terjadi tabrakan, panggil method kalah
         Die();
     }
 }
