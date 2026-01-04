@@ -1,11 +1,8 @@
 using UnityEngine;
 using TMPro;
 
-/// UIManager: Bertanggung jawab HANYA untuk mengelola UI
-/// Menerapkan Single Responsibility Principle
 public class UIManager : MonoBehaviour
 {
-    // ENCAPSULATION: UI elements dilindungi
     [Header("UI Panels")]
     [SerializeField] private GameObject startPanel;
     [SerializeField] private GameObject gameOverPanel;
@@ -14,7 +11,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI scoreTextRealtime;
 
-    // Singleton pattern untuk akses global
     public static UIManager Instance { get; private set; }
 
     private void Awake()
@@ -31,9 +27,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-		    //Bagian ini nanti akan dipanggil saat Game Manager sudah dibuat
-        //ShowStartPanel();
-        //HideGameOverPanel();
+        ShowStartPanel();
+        HideGameOverPanel();
     }
 
     public void ShowStartPanel()
@@ -73,7 +68,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    /// Update tampilan skor real-time
     public void UpdateScoreDisplay(int currentScore)
     {
         if (scoreTextRealtime != null)
